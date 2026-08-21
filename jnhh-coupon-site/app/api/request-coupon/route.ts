@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     `Payment method: ${paymentMethod}`,
   ];
   if (selectedPlan) lines.push(`Plan: ${selectedPlan}`);
-  if (customCoupon) lines.push(`Custom Key name: ${customKey}`);
+  if (customKey) lines.push(`Custom Key name: ${customKey}`);
 
   await notify(lines.join("\n"), "New Key request");
 
