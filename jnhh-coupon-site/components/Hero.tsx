@@ -2,7 +2,7 @@ export default function Hero() {
   return (
     <section className="mx-auto max-w-6xl px-4 sm:px-6 pt-16 pb-12 text-center">
       <span className="badge-pill inline-block rounded-full px-4 py-1 text-xs font-bold tracking-wider uppercase mb-6">
-        ⭐ Official Key System
+        ⭐ Official Website
       </span>
       <h1 className="display text-4xl sm:text-6xl font-bold text-white leading-tight">
         Get your <span className="glow-text">key</span>, your way
@@ -30,13 +30,13 @@ export default function Hero() {
 
       <ul className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-[var(--muted)]">
         <li className="flex items-center gap-2">
-          <span style={{ color: "var(--red-bright)" }}>✓</span> Pay after you get your coupon
+          <span style={{ color: "var(--red-bright)" }}>✓</span> Pay after you get your key (Message us on any social media for that)
         </li>
         <li className="flex items-center gap-2">
-          <span style={{ color: "var(--red-bright)" }}>✓</span> 9 payment methods supported
+          <span style={{ color: "var(--red-bright)" }}>✓</span> Get paid key within 24 hours after payment via email
         </li>
         <li className="flex items-center gap-2">
-          <span style={{ color: "var(--red-bright)" }}>✓</span> Free tier, no signup friction
+          <span style={{ color: "var(--red-bright)" }}>✓</span> You will receive key on your mail so make sure to give right email
         </li>
       </ul>
     </section>
