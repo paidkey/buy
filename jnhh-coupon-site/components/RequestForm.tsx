@@ -71,7 +71,7 @@ export default function RequestForm({
     <section id="request" className="mx-auto max-w-2xl px-4 sm:px-6 py-16">
       <div className="text-center mb-8">
         <h2 className="display text-3xl sm:text-4xl font-bold text-white">
-          Request Your <span className="glow-text">Code</span> 🔑
+          Request Your <span className="glow-text">Key</span> 🔑
         </h2>
         <p className="text-[var(--muted)] mt-3">
           Register your request first — payment happens separately through the method you pick.
@@ -128,7 +128,7 @@ export default function RequestForm({
 
         <div>
           <label htmlFor="customKey" className="block text-sm font-semibold text-white mb-2">
-            Custom Coupon
+            Custom Key
           </label>
           <input
             id="customKey"
