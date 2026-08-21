@@ -1,0 +1,44 @@
+export default function Hero() {
+  return (
+    <section className="mx-auto max-w-6xl px-4 sm:px-6 pt-16 pb-12 text-center">
+      <span className="badge-pill inline-block rounded-full px-4 py-1 text-xs font-bold tracking-wider uppercase mb-6">
+        ⭐ Official Key System
+      </span>
+      <h1 className="display text-4xl sm:text-6xl font-bold text-white leading-tight">
+        Get your <span className="glow-text">key</span>, your way
+      </h1>
+      <p className="text-[var(--muted)] mt-5 max-w-xl mx-auto text-base sm:text-lg">
+        Request a coupon, pick the payment method you trust, and unlock full access.
+        Free tier available instantly — no card required.
+      </p>
+      <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a
+          href="#request"
+          className="btn-pill glow-box px-7 py-3 text-white"
+          style={{ background: "var(--red)" }}
+        >
+          Request Your Code 🔑
+        </a>
+        <a
+          href="#pricing"
+          className="btn-pill px-7 py-3 text-white border"
+          style={{ borderColor: "var(--red)" }}
+        >
+          See Pricing
+        </a>
+      </div>
+
+      <ul className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-[var(--muted)]">
+        <li className="flex items-center gap-2">
+          <span style={{ color: "var(--red-bright)" }}>✓</span> Pay after you get your coupon
+        </li>
+        <li className="flex items-center gap-2">
+          <span style={{ color: "var(--red-bright)" }}>✓</span> 9 payment methods supported
+        </li>
+        <li className="flex items-center gap-2">
+          <span style={{ color: "var(--red-bright)" }}>✓</span> Free tier, no signup friction
+        </li>
+      </ul>
+    </section>
+  );
+}
