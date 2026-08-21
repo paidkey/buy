@@ -8,8 +8,8 @@ export default function Hero() {
         Get your <span className="glow-text">key</span>, your way
       </h1>
       <p className="text-[var(--muted)] mt-5 max-w-xl mx-auto text-base sm:text-lg">
-        Request a coupon, pick the payment method you trust, and unlock full access.
-        Free tier available instantly — no card required.
+        Request a Paid Key, pick the payment method you want to, and unlock full access. 
+        Do not hesitate if you need any kind of help
       </p>
       <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
         <a
