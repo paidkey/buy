@@ -12,7 +12,7 @@ const PAYMENT_METHODS = [
   "Litecoin (LTC)",
   "Solana (SOL)",
   "Ethereum (ETH)",
-  "Tether (USDT)",
+  "UDST (ETH)",
 ] as const;
 
 type Status = "idle" | "submitting" | "success" | "error";
@@ -24,7 +24,7 @@ export default function RequestForm({
 }) {
   const [email, setEmail] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
-  const [customCoupon, setCustomCoupon] = useState("");
+  const [customKey, setCustomKey] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -43,13 +43,13 @@ export default function RequestForm({
 
     setStatus("submitting");
     try {
-      const res = await fetch("/api/request-coupon", {
+      const res = await fetch("/api/request-Key", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email,
           paymentMethod,
-          customCoupon: customCoupon || undefined,
+          customKey: customKey || undefined,
           selectedPlan: selectedPlan
             ? `${selectedPlan.label} — ${selectedPlan.price}`
             : undefined,
@@ -60,7 +60,7 @@ export default function RequestForm({
       setStatus("success");
       setEmail("");
       setPaymentMethod("");
-      setCustomCoupon("");
+      setCustomKey("");
     } catch {
       setStatus("error");
       setErrorMsg("Something went wrong sending your request. Try again in a moment.");
@@ -127,20 +127,20 @@ export default function RequestForm({
         </div>
 
         <div>
-          <label htmlFor="customCoupon" className="block text-sm font-semibold text-white mb-2">
+          <label htmlFor="customKey" className="block text-sm font-semibold text-white mb-2">
             Custom Coupon
           </label>
           <input
-            id="customCoupon"
+            id="customKey"
             type="text"
-            value={customCoupon}
-            onChange={(e) => setCustomCoupon(e.target.value)}
+            value={customKey}
+            onChange={(e) => setCustomKey(e.target.value)}
             placeholder="e.g. MYCODE2026"
             className="w-full rounded-xl border px-4 py-3 bg-transparent text-white placeholder:text-[var(--muted)] focus-ring"
             style={{ borderColor: "var(--card-border)" }}
           />
           <p className="text-xs text-[var(--muted)] mt-1.5">
-            Add a name for your coupon (optional)
+            Add a name for your Key (optional)
           </p>
         </div>
 
@@ -162,7 +162,7 @@ export default function RequestForm({
           className="btn-pill glow-box w-full px-5 py-3 text-white disabled:opacity-60"
           style={{ background: "var(--red)" }}
         >
-          {status === "submitting" ? "Sending…" : "Request Coupon"}
+          {status === "submitting" ? "Sending…" : "Request Key"}
         </button>
       </form>
     </section>
