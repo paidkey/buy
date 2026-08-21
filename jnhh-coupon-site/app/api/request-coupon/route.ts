@@ -11,10 +11,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  const { email, paymentMethod, customCoupon, selectedPlan } = (body ?? {}) as {
+  const { email, paymentMethod, customKey, selectedPlan } = (body ?? {}) as {
     email?: string;
     paymentMethod?: string;
-    customCoupon?: string;
+    customKey?: string;
     selectedPlan?: string;
   };
 
@@ -30,14 +30,14 @@ export async function POST(req: NextRequest) {
   // they picked, and the corresponding webhook in app/api/webhooks/* is
   // what actually confirms the order.
   const lines = [
-    `New coupon request`,
+    `New Key request`,
     `Email: ${email}`,
     `Payment method: ${paymentMethod}`,
   ];
   if (selectedPlan) lines.push(`Plan: ${selectedPlan}`);
-  if (customCoupon) lines.push(`Custom coupon name: ${customCoupon}`);
+  if (customCoupon) lines.push(`Custom Key name: ${customKey}`);
 
-  await notify(lines.join("\n"), "New coupon request");
+  await notify(lines.join("\n"), "New Key request");
 
   return NextResponse.json({ ok: true });
 }
