@@ -7,7 +7,7 @@ import SiteFooter from "@/components/SiteFooter";
 export const metadata: Metadata = {
   title: "JN HH Gaming — Get Your Paid Rivals Key",
   description:
-    "Request a paid key and pay through the method you trust. Official JNHH Gaming coupon request system.",
+    "Request a paid key and pay through the method you trust. Official JNHH Gaming Website.",
 };
 
 export default function RootLayout({
