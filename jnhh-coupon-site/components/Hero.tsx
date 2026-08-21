@@ -12,14 +12,14 @@ export default function Hero() {
         Do not hesitate to contact us, Feel free to message us on any social media.
       </p>
       <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-        
+        <a
           href="#request"
           className="btn-pill glow-box px-7 py-3 text-white"
           style={{ background: "var(--red)" }}
         >
           Request Your Code 🔑
         </a>
-        
+        <a
           href="#pricing"
           className="btn-pill px-7 py-3 text-white border"
           style={{ borderColor: "var(--red)" }}
