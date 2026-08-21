@@ -5,9 +5,9 @@ import TopBanner from "@/components/TopBanner";
 import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "JNHH Gaming — Get Your Coupon",
+  title: "JN HH Gaming — Get Your Paid Rivals Key",
   description:
-    "Request a coupon and pay through the method you trust. Official JNHH Gaming coupon request system.",
+    "Request a paid key and pay through the method you trust. Official JNHH Gaming coupon request system.",
 };
 
 export default function RootLayout({
