@@ -9,7 +9,7 @@ export default function Hero() {
       </h1>
       <p className="text-[var(--muted)] mt-5 max-w-xl mx-auto text-base sm:text-lg">
         Request a Paid Key, pick the payment method you want to, and unlock full access. 
-        Do not hesitate if you need any kind of help
+        Do not hesitate to contact us, Feel free to message us on any social media.
       </p>
       <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
         <a
