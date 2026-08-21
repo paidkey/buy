@@ -47,7 +47,7 @@ export default function SiteHeader() {
             className="btn-pill glow-box px-5 py-2 text-sm text-white"
             style={{ background: "var(--red)" }}
           >
-            Get Coupon
+            Get Paid Key
           </a>
         </nav>
 
