@@ -9,7 +9,7 @@ export default function SiteFooter() {
           >
             JH
           </span>
-          <span>JNHH Gaming — Official Coupon Request System</span>
+          <span>Need Help? Contact Us ➡️</span>
         </div>
         <div className="flex items-center gap-4">
           <a href="https://discord.com/invite/xcy8w7ndQa" target="_blank" rel="noopener noreferrer" className="hover:text-white">
