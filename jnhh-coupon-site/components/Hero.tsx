@@ -27,15 +27,15 @@ export default function Hero() {
           See Pricing
         </a>
       </div>
-      <ul className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-base font-bold text-white">
+      <ul className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-base font-bold text-[#e8e4e4]">
         <li className="flex items-center gap-2">
-          <span className="text-white">✓</span> Pay after you get your key (Message us on any social media for that)
+          ✅ Pay after you get your key (Message us on any social media for that)
         </li>
         <li className="flex items-center gap-2">
-          <span className="text-white">✓</span> Get paid key within 24 hours after payment via email
+          ✅ Get paid key within 24 hours after payment via email
         </li>
         <li className="flex items-center gap-2">
-          <span className="text-white">✓</span> You will receive key on your mail so make sure to give right email
+          ✅ You will receive key on your mail so make sure to give right email
         </li>
       </ul>
     </section>
