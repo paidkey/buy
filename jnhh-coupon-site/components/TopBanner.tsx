@@ -8,7 +8,7 @@ export default function TopBanner() {
         boxShadow: "0 0 14px rgba(255,31,61,0.5)",
       }}
     >
-      ⚠️ Afraid of getting scammed? Get your coupon first — pay later.
+      ⚠️ Afraid of getting scammed? Get your Paid Key FIRST and PAY LATER. But to do that message us on any of our social media. 
     </div>
   );
 }
