@@ -33,7 +33,7 @@ export default function RequestForm({
 }) {
   const [email, setEmail] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
-  const [customCoupon, setCustomCoupon] = useState("");
+  const [customKey, setCustomKey] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const [lastSubmittedMethod, setLastSubmittedMethod] = useState("");
@@ -50,6 +50,10 @@ export default function RequestForm({
       setErrorMsg("Choose a payment method.");
       return;
     }
+    if (!selectedPlan) {
+      setErrorMsg("Select a plan in the pricing section above before continuing.");
+      return;
+    }
 
     setStatus("submitting");
     try {
@@ -59,7 +63,7 @@ export default function RequestForm({
         body: JSON.stringify({
           email,
           paymentMethod,
-          customCoupon: customCoupon || undefined,
+          customKey: customKey || undefined,
           selectedPlan: selectedPlan
             ? `${selectedPlan.label} — ${selectedPlan.price}`
             : undefined,
@@ -76,7 +80,7 @@ export default function RequestForm({
 
       setEmail("");
       setPaymentMethod("");
-      setCustomCoupon("");
+      setCustomKey("");
     } catch {
       setStatus("error");
       setErrorMsg("Something went wrong sending your request. Try again in a moment.");
@@ -95,12 +99,16 @@ export default function RequestForm({
       </div>
 
       <form onSubmit={handleSubmit} className="card glow-border rounded-[18px] p-6 sm:p-8 space-y-5">
-        {selectedPlan && (
+        {selectedPlan ? (
           <div
             className="badge-pill inline-block rounded-full px-4 py-1 text-xs font-bold tracking-wide"
           >
             Selected plan: {selectedPlan.label} — {selectedPlan.price}
           </div>
+        ) : (
+          <p className="text-sm" style={{ color: "var(--red-bright)" }}>
+            ⚠️ Pick a plan in the pricing section above before continuing.
+          </p>
         )}
 
         <div>
@@ -143,20 +151,20 @@ export default function RequestForm({
         </div>
 
         <div>
-          <label htmlFor="customCoupon" className="block text-sm font-semibold text-white mb-2">
-            Custom Coupon
+          <label htmlFor="customKey" className="block text-sm font-semibold text-white mb-2">
+            Custom Key
           </label>
           <input
-            id="customCoupon"
+            id="customKey"
             type="text"
-            value={customCoupon}
-            onChange={(e) => setCustomCoupon(e.target.value)}
-            placeholder="e.g. MYCODE2026"
+            value={customKey}
+            onChange={(e) => setCustomKey(e.target.value)}
+            placeholder="e.g. MYKEY2026"
             className="w-full rounded-xl border px-4 py-3 bg-transparent text-white placeholder:text-[var(--muted)] focus-ring"
             style={{ borderColor: "var(--card-border)" }}
           />
           <p className="text-xs text-[var(--muted)] mt-1.5">
-            Add a name for your coupon (optional)
+            Add a name for your key (optional)
           </p>
         </div>
 
@@ -177,11 +185,15 @@ export default function RequestForm({
 
         <button
           type="submit"
-          disabled={status === "submitting"}
-          className="btn-pill glow-box w-full px-5 py-3 text-white disabled:opacity-60"
+          disabled={status === "submitting" || !selectedPlan}
+          className="btn-pill glow-box w-full px-5 py-3 text-white disabled:opacity-40 disabled:cursor-not-allowed"
           style={{ background: "var(--red)" }}
         >
-          {status === "submitting" ? "Sending…" : "Request Coupon"}
+          {status === "submitting"
+            ? "Sending…"
+            : !selectedPlan
+            ? "Select a plan above first"
+            : "Continue Payment"}
         </button>
       </form>
     </section>
