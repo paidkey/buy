@@ -8,11 +8,7 @@ const PAYMENT_METHODS = [
   "Credit Card (Ko-fi)",
   "UPI",
   "PayPal",
-  "Bitcoin (BTC)",
-  "Litecoin (LTC)",
-  "Solana (SOL)",
-  "Ethereum (ETH)",
-  "Tether (USDT)",
+  "Crypto",
 ] as const;
 
 // Payment methods that route through Ko-fi's own checkout page — after a
@@ -23,6 +19,14 @@ const KOFI_REDIRECT_METHODS = new Set([
   "PayPal",
 ]);
 const KOFI_URL = "https://ko-fi.com/jnhhgaming";
+
+// One fixed-price NOWPayments link per plan — buyer picks their coin at
+// checkout on NOWPayments' own page. Swap these if you ever regenerate them.
+const CRYPTO_LINKS: Record<PlanId, string> = {
+  "1month": "https://nowpayments.io/payment/?iid=4871211810",
+  "1year": "https://nowpayments.io/payment/?iid=5934133047",
+  lifetime: "https://nowpayments.io/payment/?iid=5960221315",
+};
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -76,6 +80,8 @@ export default function RequestForm({
 
       if (KOFI_REDIRECT_METHODS.has(paymentMethod)) {
         window.open(KOFI_URL, "_blank", "noopener,noreferrer");
+      } else if (paymentMethod === "Crypto" && selectedPlan) {
+        window.open(CRYPTO_LINKS[selectedPlan.id], "_blank", "noopener,noreferrer");
       }
 
       setEmail("");
@@ -179,6 +185,8 @@ export default function RequestForm({
             ✅ Request sent.{" "}
             {KOFI_REDIRECT_METHODS.has(lastSubmittedMethod)
               ? "We opened Ko-fi in a new tab so you can complete payment there."
+              : lastSubmittedMethod === "Crypto"
+              ? "We opened your payment link in a new tab — pick your coin there to pay."
               : "We'll follow up with next steps for your chosen payment method."}
           </p>
         )}
