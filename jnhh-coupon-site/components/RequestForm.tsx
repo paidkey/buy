@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import type { PlanId } from "./PricingSection";
+import { CRYPTO_WALLETS } from "@/lib/crypto-wallets";
 
-const PAYMENT_METHODS = [
+const FIAT_METHODS = [
   "Debit Card (Ko-fi)",
   "Credit Card (Ko-fi)",
   "UPI",
   "PayPal",
-  "Crypto",
 ] as const;
 
 // Payment methods that route through Ko-fi's own checkout page — after a
@@ -19,14 +19,6 @@ const KOFI_REDIRECT_METHODS = new Set([
   "PayPal",
 ]);
 const KOFI_URL = "https://ko-fi.com/jnhhgaming";
-
-// One fixed-price NOWPayments link per plan — buyer picks their coin at
-// checkout on NOWPayments' own page. Swap these if you ever regenerate them.
-const CRYPTO_LINKS: Record<PlanId, string> = {
-  "1month": "https://nowpayments.io/payment/?iid=4871211810",
-  "1year": "https://nowpayments.io/payment/?iid=5934133047",
-  lifetime: "https://nowpayments.io/payment/?iid=5960221315",
-};
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -41,6 +33,20 @@ export default function RequestForm({
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const [lastSubmittedMethod, setLastSubmittedMethod] = useState("");
+  const [copiedAddress, setCopiedAddress] = useState<string | null>(null);
+
+  const selectedWallet = CRYPTO_WALLETS.find((w) => w.label === paymentMethod);
+
+  async function handleCopy(address: string) {
+    try {
+      await navigator.clipboard.writeText(address);
+      setCopiedAddress(address);
+      setTimeout(() => setCopiedAddress(null), 2000);
+    } catch {
+      // Clipboard API can fail (e.g. insecure context) — address is still
+      // visible as plain text so the buyer can select/copy it manually.
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -80,8 +86,6 @@ export default function RequestForm({
 
       if (KOFI_REDIRECT_METHODS.has(paymentMethod)) {
         window.open(KOFI_URL, "_blank", "noopener,noreferrer");
-      } else if (paymentMethod === "Crypto" && selectedPlan) {
-        window.open(CRYPTO_LINKS[selectedPlan.id], "_blank", "noopener,noreferrer");
       }
 
       setEmail("");
@@ -93,11 +97,13 @@ export default function RequestForm({
     }
   }
 
+  const lastWasCrypto = CRYPTO_WALLETS.some((w) => w.label === lastSubmittedMethod);
+
   return (
     <section id="request" className="mx-auto max-w-2xl px-4 sm:px-6 py-16">
       <div className="text-center mb-8">
         <h2 className="display text-3xl sm:text-4xl font-bold text-white">
-          Request Your <span className="glow-text">Code</span> 🔑
+          Request Your <span className="glow-text">Key</span> 🔑
         </h2>
         <p className="text-[var(--muted)] mt-3">
           Register your request first — payment happens separately through the method you pick.
@@ -148,13 +154,69 @@ export default function RequestForm({
             <option value="" disabled>
               Select a payment method
             </option>
-            {PAYMENT_METHODS.map((method) => (
-              <option key={method} value={method}>
-                {method}
-              </option>
-            ))}
+            <optgroup label="Card / Other">
+              {FIAT_METHODS.map((method) => (
+                <option key={method} value={method}>
+                  {method}
+                </option>
+              ))}
+            </optgroup>
+            <optgroup label="Crypto">
+              {CRYPTO_WALLETS.map((wallet) => (
+                <option key={wallet.id} value={wallet.label}>
+                  {wallet.label}
+                </option>
+              ))}
+            </optgroup>
           </select>
         </div>
+
+        {selectedWallet && (
+          <div
+            className="rounded-xl border p-4 space-y-3"
+            style={{ borderColor: "var(--card-border)" }}
+          >
+            <p className="text-sm font-semibold text-white">
+              Pay with {selectedWallet.coinName}
+              {selectedWallet.network ? ` — ${selectedWallet.network}` : ""}
+            </p>
+
+            <img
+              src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
+                selectedWallet.address
+              )}`}
+              alt={`${selectedWallet.coinName} receive address QR code`}
+              width={160}
+              height={160}
+              className="mx-auto rounded-lg bg-white p-2"
+            />
+
+            <div className="flex items-center gap-2">
+              <code
+                className="flex-1 break-all text-xs text-[var(--muted)] bg-[#0f0b0c] rounded-lg px-3 py-2 border"
+                style={{ borderColor: "var(--card-border)" }}
+              >
+                {selectedWallet.address}
+              </code>
+              <button
+                type="button"
+                onClick={() => handleCopy(selectedWallet.address)}
+                className="btn-pill px-3 py-2 text-xs text-white border shrink-0"
+                style={{ borderColor: "var(--red)" }}
+              >
+                {copiedAddress === selectedWallet.address ? "Copied!" : "Copy"}
+              </button>
+            </div>
+
+            <p className="text-xs text-[var(--muted)]">
+              Send the equivalent of {selectedPlan ? selectedPlan.price : "your plan's price"}{" "}
+              here — double-check you're sending on the{" "}
+              {selectedWallet.network ?? selectedWallet.coinName} network. After sending, message
+              us on Discord, Instagram, or Telegram with your transaction ID so we can confirm and
+              send your key.
+            </p>
+          </div>
+        )}
 
         <div>
           <label htmlFor="customKey" className="block text-sm font-semibold text-white mb-2">
@@ -185,8 +247,8 @@ export default function RequestForm({
             ✅ Request sent.{" "}
             {KOFI_REDIRECT_METHODS.has(lastSubmittedMethod)
               ? "We opened Ko-fi in a new tab so you can complete payment there."
-              : lastSubmittedMethod === "Crypto"
-              ? "We opened your payment link in a new tab — pick your coin there to pay."
+              : lastWasCrypto
+              ? "Use the address above to send payment, then message us your transaction ID."
               : "We'll follow up with next steps for your chosen payment method."}
           </p>
         )}
