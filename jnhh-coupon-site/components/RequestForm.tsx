@@ -245,9 +245,9 @@ export default function RequestForm({
           <p className="text-sm text-green-400">
             ✅ Request sent.{" "}
             {KOFI_REDIRECT_METHODS.has(lastSubmittedMethod)
-              ? "We opened Ko-fi in a new tab so you can complete payment there."
+              ? "If you made a payment, we will send you Paid Rivals Key along with script on your email within 24 hours."
               : lastWasCrypto
-              ? "Use the address above to send payment, then message us your transaction ID."
+              ? "If you made a payment, we will send you Paid Rivals Key along with script on your email within 24 hours."
               : "We'll follow up with next steps for your chosen payment method."}
           </p>
         )}
