@@ -12,8 +12,17 @@ const PAYMENT_METHODS = [
   "Litecoin (LTC)",
   "Solana (SOL)",
   "Ethereum (ETH)",
-  "UDST (ETH)",
+  "Tether (USDT)",
 ] as const;
+
+// Payment methods that route through Ko-fi's own checkout page — after a
+// successful request, we send the buyer there to actually pay.
+const KOFI_REDIRECT_METHODS = new Set([
+  "Debit Card (Ko-fi)",
+  "Credit Card (Ko-fi)",
+  "PayPal",
+]);
+const KOFI_URL = "https://ko-fi.com/jnhhgaming";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -24,9 +33,10 @@ export default function RequestForm({
 }) {
   const [email, setEmail] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
-  const [customKey, setCustomKey] = useState("");
+  const [customCoupon, setCustomCoupon] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [lastSubmittedMethod, setLastSubmittedMethod] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -43,13 +53,13 @@ export default function RequestForm({
 
     setStatus("submitting");
     try {
-      const res = await fetch("/api/request-Key", {
+      const res = await fetch("/api/request-coupon", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email,
           paymentMethod,
-          customKey: customKey || undefined,
+          customCoupon: customCoupon || undefined,
           selectedPlan: selectedPlan
             ? `${selectedPlan.label} — ${selectedPlan.price}`
             : undefined,
@@ -58,9 +68,15 @@ export default function RequestForm({
 
       if (!res.ok) throw new Error("Request failed");
       setStatus("success");
+      setLastSubmittedMethod(paymentMethod);
+
+      if (KOFI_REDIRECT_METHODS.has(paymentMethod)) {
+        window.open(KOFI_URL, "_blank", "noopener,noreferrer");
+      }
+
       setEmail("");
       setPaymentMethod("");
-      setCustomKey("");
+      setCustomCoupon("");
     } catch {
       setStatus("error");
       setErrorMsg("Something went wrong sending your request. Try again in a moment.");
@@ -71,7 +87,7 @@ export default function RequestForm({
     <section id="request" className="mx-auto max-w-2xl px-4 sm:px-6 py-16">
       <div className="text-center mb-8">
         <h2 className="display text-3xl sm:text-4xl font-bold text-white">
-          Request Your <span className="glow-text">Key</span> 🔑
+          Request Your <span className="glow-text">Code</span> 🔑
         </h2>
         <p className="text-[var(--muted)] mt-3">
           Register your request first — payment happens separately through the method you pick.
@@ -127,20 +143,20 @@ export default function RequestForm({
         </div>
 
         <div>
-          <label htmlFor="customKey" className="block text-sm font-semibold text-white mb-2">
-            Custom Key
+          <label htmlFor="customCoupon" className="block text-sm font-semibold text-white mb-2">
+            Custom Coupon
           </label>
           <input
-            id="customKey"
+            id="customCoupon"
             type="text"
-            value={customKey}
-            onChange={(e) => setCustomKey(e.target.value)}
+            value={customCoupon}
+            onChange={(e) => setCustomCoupon(e.target.value)}
             placeholder="e.g. MYCODE2026"
             className="w-full rounded-xl border px-4 py-3 bg-transparent text-white placeholder:text-[var(--muted)] focus-ring"
             style={{ borderColor: "var(--card-border)" }}
           />
           <p className="text-xs text-[var(--muted)] mt-1.5">
-            Add a name for your Key (optional)
+            Add a name for your coupon (optional)
           </p>
         </div>
 
@@ -152,7 +168,10 @@ export default function RequestForm({
 
         {status === "success" && (
           <p className="text-sm text-green-400">
-            ✅ Request sent. We&apos;ll follow up with next steps for your chosen payment method.
+            ✅ Request sent.{" "}
+            {KOFI_REDIRECT_METHODS.has(lastSubmittedMethod)
+              ? "We opened Ko-fi in a new tab so you can complete payment there."
+              : "We'll follow up with next steps for your chosen payment method."}
           </p>
         )}
 
@@ -162,7 +181,7 @@ export default function RequestForm({
           className="btn-pill glow-box w-full px-5 py-3 text-white disabled:opacity-60"
           style={{ background: "var(--red)" }}
         >
-          {status === "submitting" ? "Sending…" : "Request Key"}
+          {status === "submitting" ? "Sending…" : "Request Coupon"}
         </button>
       </form>
     </section>
