@@ -7,7 +7,6 @@ import { CRYPTO_WALLETS } from "@/lib/crypto-wallets";
 const FIAT_METHODS = [
   "Debit Card (Ko-fi)",
   "Credit Card (Ko-fi)",
-  "UPI",
   "PayPal",
 ] as const;
 
