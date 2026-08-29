@@ -1,17 +1,14 @@
 "use client";
-
 import { useState } from "react";
 import Link from "next/link";
-
+import Image from "next/image";
 const SOCIAL_LINKS = [
   { label: "Discord", href: "https://discord.com/invite/xcy8w7ndQa" },
   { label: "Instagram", href: "https://www.instagram.com/jn_hh_gaming" },
   { label: "Telegram", href: "https://t.me/jnhhgaming" },
 ];
-
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
-
   return (
     <header
       className="sticky top-[34px] sm:top-[38px] z-40 w-full border-b"
@@ -19,17 +16,17 @@ export default function SiteHeader() {
     >
       <div className="mx-auto max-w-6xl flex items-center justify-between px-4 sm:px-6 py-3">
         <Link href="/" className="flex items-center gap-2 focus-ring rounded-md">
-          <span
-            className="flex h-9 w-9 items-center justify-center rounded-lg font-bold text-white display"
-            style={{ background: "var(--red)", boxShadow: "0 0 14px rgba(255,31,61,0.65)" }}
-          >
-            JH
-          </span>
+          <Image
+            src="/logo.jpg"
+            alt="JNHH Gaming"
+            width={44}
+            height={44}
+            className="h-11 w-11 object-contain"
+          />
           <span className="hidden sm:block display font-semibold tracking-wide text-white">
             JNHH GAMING
           </span>
         </Link>
-
         <nav className="hidden md:flex items-center gap-6 text-sm text-[var(--muted)]">
           {SOCIAL_LINKS.map((link) => (
             <a
@@ -50,7 +47,6 @@ export default function SiteHeader() {
             Get Paid Key
           </a>
         </nav>
-
         <button
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
@@ -71,7 +67,6 @@ export default function SiteHeader() {
           />
         </button>
       </div>
-
       {open && (
         <div className="md:hidden border-t px-4 py-4 flex flex-col gap-4" style={{ borderColor: "var(--card-border)" }}>
           {SOCIAL_LINKS.map((link) => (
