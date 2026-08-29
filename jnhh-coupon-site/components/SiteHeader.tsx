@@ -24,7 +24,7 @@ export default function SiteHeader() {
             className="h-11 w-11 object-contain"
           />
           <span className="hidden sm:block display font-semibold tracking-wide text-white">
-            JNHH GAMING
+            JN HH GAMING
           </span>
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-sm text-[var(--muted)]">
